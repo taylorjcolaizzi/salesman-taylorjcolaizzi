@@ -5,4 +5,5 @@
 * cities3.dat : 1207 cities in North America
 * cities4.dat : 2063 cities around the world
 
-* sales.plt : example plotting script to overlay path of travel with a map
+* sales.plt : example plotting script to overlay path of travel with a map 
+* world.plt : another example, but with a Mercator projection of the whole earth
