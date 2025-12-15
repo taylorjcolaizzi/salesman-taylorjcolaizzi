@@ -3,6 +3,7 @@
 import math
 import random
 import sys
+import time
 
 # -------------------------------
 # Haversine formula
@@ -206,7 +207,15 @@ if __name__ == "__main__":
     current_distance = route_distance(current_route, coords)
     print("Old route is this long (km):", round(current_distance, 2))
 
+    print('starting code execution timer')
+    start_time = time.perf_counter()
+
     route, distance = tsp_simulated_annealing(coords)
+
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    print(f"Elapsed time: {elapsed_time:.4f} seconds")
+
     print("Optimized route:", [names[i] for i in route])
     print("Total distance (km):", round(distance, 2))
 
