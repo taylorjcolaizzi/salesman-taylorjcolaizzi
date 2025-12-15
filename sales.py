@@ -110,7 +110,7 @@ if __name__ == "__main__":
         raise ValueError("Error: Not enough cities to compute TSP.")
 
     print(f"Running Simulated Annealing on {len(coords)} cities...")
-    route, distance = tsp_simulated_anne    route, distance = tsp_simulated_annealing(coords)
+    route, distance = tsp_simulated_annealing(coords)
     print("Optimized route:", [names[i] for i in route])
     print("Total distance (km):", round(distance, 2))
 
