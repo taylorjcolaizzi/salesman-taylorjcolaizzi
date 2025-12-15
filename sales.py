@@ -37,7 +37,7 @@ def swap_two(route):
 # -------------------------------
 # Simulated Annealing
 # -------------------------------
-def tsp_simulated_annealing(coords, initial_temp=10000, cooling_rate=0.995, max_iter=100000):
+def tsp_simulated_annealing(coords, initial_temp=10000, cooling_rate=1.0, max_iter=2000000):
     n = len(coords)
     current_route = list(range(n)) + [0]
     current_distance = route_distance(current_route, coords)
