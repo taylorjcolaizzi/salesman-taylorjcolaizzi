@@ -1,7 +1,11 @@
 
 import math
+import random
+import sys
 
+# -------------------------------
 # Haversine formula
+# -------------------------------
 def haversine(coord1, coord2):
     R = 6371.0
     lat1, lon1 = math.radians(coord1[0]), math.radians(coord1[1])
@@ -12,42 +16,56 @@ def haversine(coord1, coord2):
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     return R * c
 
-# Build distance matrix
-def build_distance_matrix(coords):
+# -------------------------------
+# Compute route distance
+# -------------------------------
+def route_distance(route, coords):
+    dist = 0.0
+    for i in range(len(route) - 1):
+        dist += haversine(coords[route[i]], coords[route[i+1]])
+    return dist
+
+# -------------------------------
+# Generate neighbor by swapping two cities
+# -------------------------------
+def swap_two(route):
+    i, j = random.sample(range(1, len(route)-1), 2)
+    new_route = route[:]
+    new_route[i], new_route[j] = new_route[j], new_route[i]
+    return new_route
+
+# -------------------------------
+# Simulated Annealing
+# -------------------------------
+def tsp_simulated_annealing(coords, initial_temp=10000, cooling_rate=0.995, max_iter=100000):
     n = len(coords)
-    dist_matrix = [[0.0]*n for _ in range(n)]
-    for i in range(n):
-        for j in range(n):
-            if i != j:
-                dist_matrix[i][j] = haversine(coords[i], coords[j])
-    return dist_matrix
+    current_route = list(range(n)) + [0]
+    current_distance = route_distance(current_route, coords)
+    best_route = current_route[:]
+    best_distance = current_distance
+    T = initial_temp
 
-# Nearest Neighbor heuristic
-def tsp_nearest_neighbor(coords):
-    n = len(coords)
-    dist_matrix = build_distance_matrix(coords)
-    visited = [False]*n
-    path = [0]
-    visited[0] = True
-    total_distance = 0.0
+    for _ in range(max_iter):
+        new_route = swap_two(current_route)
+        new_distance = route_distance(new_route, coords)
+        delta = new_distance - current_distance
 
-    for _ in range(n-1):
-        last = path[-1]
-        next_city = None
-        min_dist = float('inf')
-        for j in range(n):
-            if not visited[j] and dist_matrix[last][j] < min_dist:
-                min_dist = dist_matrix[last][j]
-                next_city = j
-        path.append(next_city)
-        visited[next_city] = True
-        total_distance += min_dist
+        if delta < 0 or random.random() < math.exp(-delta / T):
+            current_route = new_route
+            current_distance = new_distance
+            if current_distance < best_distance:
+                best_route = current_route[:]
+                best_distance = current_distance
 
-    total_distance += dist_matrix[path[-1]][path[0]]
-    path.append(0)
-    return path, total_distance
+        T *= cooling_rate
+        if T < 1e-8:
+            break
 
-# Read coordinates and city names
+    return best_route, best_distance
+
+# -------------------------------
+# Read coordinates and names
+# -------------------------------
 def read_coordinates_and_names(filename):
     coords = []
     names = []
@@ -66,26 +84,34 @@ def read_coordinates_and_names(filename):
                     print(f"Skipping invalid line: {line.strip()}")
     return coords, names
 
-# Write optimized route back to file
+# -------------------------------
+# Write optimized route
+# -------------------------------
 def write_optimized_route(filename, route, coords, names):
     with open(filename, 'w') as file:
         file.write("#longitude   latitude    City\n")
-        for idx in route[:-1]:  # skip the last return-to-start index
+        for idx in route[:-1]:
             lat, lon = coords[idx]
             city = names[idx]
             file.write(f"{lon:.2f}\t{lat:.2f}\t{city}\n")
 
+# -------------------------------
 # Main
+# -------------------------------
 if __name__ == "__main__":
-    filename = "cities2k.dat"
+    if len(sys.argv) != 2:
+        print("Usage: python sales.py <filename>")
+        sys.exit(1)
+
+    filename = sys.argv[1]
     coords, names = read_coordinates_and_names(filename)
 
     if len(coords) < 2:
         raise ValueError("Error: Not enough cities to compute TSP.")
 
-    route, distance = tsp_nearest_neighbor(coords)
-    print("Optimal route (approx):", [names[i] for i in route])
+    print(f"Running Simulated Annealing on {len(coords)} cities...")
+    route, distance = tsp_simulated_anne    route, distance = tsp_simulated_annealing(coords)
+    print("Optimized route:", [names[i] for i in route])
     print("Total distance (km):", round(distance, 2))
 
     write_optimized_route(filename, route, coords, names)
-    print(f"Optimized route written to {filename}")
