@@ -49,4 +49,4 @@ cities1k, 732 177, 731 965, 119 212, 29
 
 cities2k, 10 187 617, 5 179 440, 355 493, 50
 
-Clearly, my simulated annealing isn't really working that great. I want it to be at least at nearest neighbor, maybe even less.
+Clearly, my simulated annealing isn't really working that great. I want it to be at least at the length of nearest neighbor, but even less is better.
