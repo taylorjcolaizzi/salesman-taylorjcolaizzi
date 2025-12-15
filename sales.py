@@ -99,12 +99,14 @@ def write_optimized_route(filename, route, coords, names):
 # Main
 # -------------------------------
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python sales.py <filename>")
+    if len(sys.argv) < 2 or len(sys.argv) > 3:
+        print("Usage: python sales.py <input_file> [output_file]")
         sys.exit(1)
 
-    filename = sys.argv[1]
-    coords, names = read_coordinates_and_names(filename)
+    input_file = sys.argv[1]
+    output_file = sys.argv[2] if len(sys.argv) == 3 else input_file
+
+    coords, names = read_coordinates_and_names(input_file)
 
     if len(coords) < 2:
         raise ValueError("Error: Not enough cities to compute TSP.")
@@ -114,4 +116,4 @@ if __name__ == "__main__":
     print("Optimized route:", [names[i] for i in route])
     print("Total distance (km):", round(distance, 2))
 
-    write_optimized_route(filename, route, coords, names)
+    write_optimized_route(output_file, route, coords, names)
