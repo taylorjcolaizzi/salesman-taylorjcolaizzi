@@ -66,7 +66,7 @@ def swap_two(route):
 # -------------------------------
 # Simulated Annealing
 # -------------------------------
-def tsp_simulated_annealing(coords, initial_temp=10000, cooling_rate=0.99, max_iter=1000000):
+def tsp_simulated_annealing(coords, initial_temp=200000, cooling_rate=0.999, max_iter=100000000):
     '''
     Docstring for tsp_simulated_annealing
     Uses simulated annealing to reduce total path length of
@@ -116,6 +116,44 @@ def tsp_simulated_annealing(coords, initial_temp=10000, cooling_rate=0.99, max_i
             break
 
     return best_route, best_distance
+
+# -------------------------------
+# Nearest Neighbor heuristic for fun!
+# -------------------------------
+# Build distance matrix
+def build_distance_matrix(coords):
+    n = len(coords)
+    dist_matrix = [[0.0]*n for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if i != j:
+                dist_matrix[i][j] = haversine(coords[i], coords[j])
+    return dist_matrix
+
+# Nearest Neighbor heuristic
+def tsp_nearest_neighbor(coords):
+    n = len(coords)
+    dist_matrix = build_distance_matrix(coords)
+    visited = [False]*n
+    path = [0]
+    visited[0] = True
+    total_distance = 0.0
+
+    for _ in range(n-1):
+        last = path[-1]
+        next_city = None
+        min_dist = float('inf')
+        for j in range(n):
+            if not visited[j] and dist_matrix[last][j] < min_dist:
+                min_dist = dist_matrix[last][j]
+                next_city = j
+        path.append(next_city)
+        visited[next_city] = True
+        total_distance += min_dist
+
+    total_distance += dist_matrix[path[-1]][path[0]]
+    path.append(0)
+    return path, total_distance
 
 # -------------------------------
 # Read coordinates and names
@@ -196,6 +234,7 @@ if __name__ == "__main__":
     output_file = sys.argv[2] if len(sys.argv) == 3 else input_file
 
     coords, names = read_coordinates_and_names(input_file)
+    old_coords = coords
 
     if len(coords) < 2:
         raise ValueError("Error: Not enough cities to compute TSP.")
@@ -220,3 +259,12 @@ if __name__ == "__main__":
     print("Total distance (km):", round(distance, 2))
 
     write_optimized_route(output_file, route, coords, names)
+
+    print('by the way, we can also compute a path')
+    print('with another algorithm called nearest')
+    print('neighbor heuristic. here is that result')
+
+    route, distance = tsp_nearest_neighbor(old_coords)
+    print('for nearest neighbor, here is the result')
+    # print("Optimal route (approx):", [names[i] for i in route])
+    print("Total distance (km):", round(distance, 2))
