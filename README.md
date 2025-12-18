@@ -17,7 +17,7 @@ NA = North America, World = Mercator projection of the whole earth
 
 HOW TO USE THIS INSANE PROGRAM
 
-All my simulated annealing code is in the file sales.py. This is all just AI code. It does simulated annealing like asked. It prints the old distance and the new distance. It also prints the time to execute. For fun, I also found out another algorithm called the nearest neighbor heuristic that is very fast, but it doesn't necessarily seek the global minimum.
+All my simulated annealing code is in the file sales.py. This is all just AI code. It does simulated annealing, prints the old and new distances, and the time to execute. For fun, I also found out another algorithm called the nearest neighbor heuristic that is very fast, but it doesn't necessarily seek the global minimum. Finally, the code produces a plot of the annealing schedule and saves the new cities file.
 
 How to run my code:
 First, make sure you're on the phys56xx environment.
@@ -28,25 +28,20 @@ Third, run the sales.py program with the following structure:
 
 python sales.py old_route.dat new_route.dat
 
-This will run sales.py in python with the old_route.dat as the original route. Then it will save the new route to location new_route.dat.
+This will run sales.py in python with the old_route.dat as the original route. Then it will save the new route to the location new_route.dat.
 
 An example is the following:
 
 python sales.py original_cities23.dat cities23.dat
 
-Please check out files citiesxx.pdf to see my world plots.
+Please check out files citiesxx.pdf to see my world plots and files anxx.png to see my annealing schedules.
 
-Honestly, it looks like nearest neighbor heuristic is doing better than simulated annealing for me. Maybe that's because my simulated annealing is just doing "swap two" instead of something more complex. It also might just not be running long enough, since I just run it for less than a minute each time.
+Current best results with simulated annealing: I'm just running this on Rivanna with 16 Gb of memory and 10 CPU cores.
 
-Current best results with simulated annealing:
+| filename | original length (km) | nearest neighbor (km) | simulated annealing (km) | time (s) |
+| --- | --- | --- | --- | --- |
+| cities23 | 52 039 | 13 859 | 13 404 | 39.4 |
+| cities150 | 324 545 | 56 179 | 50 064 | 47.8 |
+| cities1k | 2 746 970 | 119 212 | 
+| cities2k |
 
-file, original length, simulated annealing, nearest neighbor, sim. ann. time
-cities23, 38 963, 14 098, 13 859, .7
-
-cities150, 317 298, 99 252, 56 179, 3.8
-
-cities1k, 732 177, 731 965, 119 212, 29
-
-cities2k, 10 187 617, 5 179 440, 355 493, 50
-
-Clearly, my simulated annealing isn't really working that great. I want it to be at least at the length of nearest neighbor, but even less is better.
