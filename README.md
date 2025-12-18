@@ -34,11 +34,25 @@ An example is the following:
 
 python sales.py original_cities23.dat cities23.dat
 
+To create the world plot, do:
+
+python routeplot.py new_route.dat
+
+or (if you need total world plot)
+
+python routeplot.py new_route.dat -w
+
+Example:
+
+python routeplot.py cities23.dat
+
+This will create a new files calles cities23.pdf, which is the world plot.
+
 Please check out files citiesxx.pdf to see my world plots and files anxx.png to see my annealing schedules.
 
-Current best results with simulated annealing: I'm just running this on Rivanna with 16 Gb of memory and 10 CPU cores. However, Rivanna says it has access to 40 cores when I only specified 10 in the open on demand.
+Current best results with simulated annealing: I'm just running this on Rivanna with 16 Gb of memory and 10 CPU cores. However, Rivanna says it has access to 40 cores when I only specified 10 in the open on demand. So, I hardcoded sales.py to default to 10 cores, instead of what the computer has access to.
 
-For some reason, Rivanna takes longer to run than my humble $1000 MacBook Air, but I don't know why.
+For some reason, Rivanna takes longer to run than my humble passively cooled MacBook Air, but I don't know why.
 
 | filename | original length (km) | nearest neighbor (km) | simulated annealing (km) | time (s) |
 | --- | --- | --- | --- | --- |
@@ -48,3 +62,7 @@ For some reason, Rivanna takes longer to run than my humble $1000 MacBook Air, b
 | cities2k | 12 141 639 | 355 493 | 354 308 | 192.3 |
 
 So, it looks like compared to nearest neighbor, my simulated annealing was able to shave off a little bit of distance for every data file; however, I needed to run this a couple times until I got satisfactory results.
+
+At first, my method for selecting trial configurations was to just randomly swap 2 cities and hope for the best. However, this ended up being very slow and didn't converge for the higher city counts. Instead, Tristen suggested that I should reverse the order of all the cities between the two random ones I selected. This ended up working better than before, so I stuck with it! From looking at the map plots, it tended to untangle some of the loops.
+
+Hopefully it's okay I didn't put the text box in the plots!
