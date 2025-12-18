@@ -1,4 +1,5 @@
 
+import numpy as np
 import math
 import random
 import matplotlib.pyplot as plt
@@ -15,6 +16,10 @@ def read_coordinates(filename):
                 lon, lat = map(float, parts[:2])
                 coords.append((lat, lon))  # Store as (latitude, longitude)
     return coords
+    # switch to NUMPY
+    # data = np.loadtxt(filename, skiprows = 1)
+    # coords = data[:, [1, 0]]
+    # return coords
 
 # --- Step 2: Haversine distance ---
 def haversine_distance(p1, p2):
@@ -34,9 +39,13 @@ def total_distance(tour, coords):
     # Includes return to starting point
     return sum(haversine_distance(coords[tour[i]], coords[tour[(i+1) % len(tour)]]) for i in range(len(tour)))
 
+    # DO NUMPY
+    # return np.sum(dist_matrix[tour, np.roll(tour, -1)])
+
 # --- Step 3: Simulated Annealing with tracking ---
-def simulated_annealing(coords, initial_temp=10000, cooling_rate=0.9999, max_iter=200000):
+def simulated_annealing(coords, initial_temp=10000, cooling_rate=0.9999, max_iter=400000):
     n = len(coords)
+    # dist_matrix = haversine_distance_matrix(coords)
     current_tour = list(range(n))
     random.shuffle(current_tour)
     current_distance = total_distance(current_tour, coords)
