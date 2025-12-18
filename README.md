@@ -38,10 +38,13 @@ Please check out files citiesxx.pdf to see my world plots and files anxx.png to 
 
 Current best results with simulated annealing: I'm just running this on Rivanna with 16 Gb of memory and 10 CPU cores. However, Rivanna says it has access to 40 cores when I only specified 10 in the open on demand.
 
+For some reason, Rivanna takes longer to run than my humble $1000 MacBook Air, but I don't know why.
+
 | filename | original length (km) | nearest neighbor (km) | simulated annealing (km) | time (s) |
 | --- | --- | --- | --- | --- |
-| cities23 | 52 039 | 13 859 | 13 404 | 39.4 |
-| cities150 | 324 545 | 56 179 | 50 064 | 47.8 |
-| cities1k | 2 746 970 | 119 212 | 
-| cities2k |
+| cities23 | 46 112 | 13 859 | 13 487 | 68.5 |
+| cities150 | 316 803 | 56 179 | 50 160 | 78.1 |
+| cities1k | 2 780 334 | 119 212 | 106 549 | 148.4 |
+| cities2k | 12 141 639 | 355 493 | 354 308 | 192.3 |
 
+So, it looks like compared to nearest neighbor, my simulated annealing was able to shave off a little bit of distance for every data file; however, I needed to run this a couple times until I got satisfactory results.
