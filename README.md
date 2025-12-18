@@ -36,7 +36,7 @@ python sales.py original_cities23.dat cities23.dat
 
 Please check out files citiesxx.pdf to see my world plots and files anxx.png to see my annealing schedules.
 
-Current best results with simulated annealing: I'm just running this on Rivanna with 16 Gb of memory and 10 CPU cores.
+Current best results with simulated annealing: I'm just running this on Rivanna with 16 Gb of memory and 10 CPU cores. However, Rivanna says it has access to 40 cores when I only specified 10 in the open on demand.
 
 | filename | original length (km) | nearest neighbor (km) | simulated annealing (km) | time (s) |
 | --- | --- | --- | --- | --- |
